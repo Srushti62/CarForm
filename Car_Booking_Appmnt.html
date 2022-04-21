@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Booking Appointment</title>
+    <!-- Title of the document (Displayed as Tab Heading) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&family=Shadows+Into+Light&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Font Family Added -->
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Be Vietnam Pro", sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        width: 100vw;
+        background-image: url("https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .main {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      h1 {
+        color: white;
+        font-weight: 900;
+      }
+
+      .inner {
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 35px 35px 15px 35px;
+        border-radius: 20px;
+        color: white;
+        font-weight: 800;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      span {
+        font-size: 12px;
+      }
+      .formGroup div {
+        display: block;
+        margin: 20px;
+        text-shadow: 2px 2px black;
+      }
+
+      .formGroup div input[type="text"],
+      input[type="number"] {
+        background-color: transparent;
+        font-size: 16px;
+        font-weight: 900;
+        border: none;
+        outline: none;
+        color: white;
+        border-bottom: 2px solid white;
+      }
+
+      .book,
+      .reset {
+        width: 30%;
+        align-items: center;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        color: black;
+        font-weight: 800;
+        background-color: white;
+        border: 5px solid black;
+        border-radius: 20px;
+        box-shadow: 2px 2px 2px 2px black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="inner">
+        <!-- To set it at the center -->
+        <h1>Book Your Appointment Here</h1>
+        <!-- Heading -->
+        <h5>(All fields are required)</h5>
+        <form class="formGroup">
+          <!-- Form Starts Here -->
+          <div>
+            <label>Name: </label>
+            <!-- Name of the Person -->
+            <input type="text" name="name" id="name" /><br />
+            <span id="s_name"></span>
+          </div>
+
+          <div>
+            <label>Mobile No.: </label>
+            <!-- Mobile Number -->
+            <input type="number" name="mob" id="mob" required /><br />
+            <span id="s_mob"></span>
+          </div>
+
+          <div>
+            <label>Email-ID: </label>
+            <!-- Email-ID -->
+            <input type="text" name="email" id="email" /><br />
+            <span id="s_email"></span>
+          </div>
+
+          <div class="colorGroup">
+            <!-- Checkbox to select Prefered color of the Car -->
+            <label>Color Preference: </label>
+            <input type="checkbox" name="color" id="color" id="red" />
+            <label for="red">Red</label>
+            <input type="checkbox" name="color" id="color" id="white" />
+            <label for="white">White</label>
+            <input type="checkbox" name="color" id="color" id="black" />
+            <label for="black">Black</label><br />
+            <span id="s_color"></span>
+          </div>
+
+          <div>
+            <label>Annual Income: </label>
+            <!-- Radio Button to select the household income -->
+            <input type="radio" name="income" id="income1" />
+            <label for="income1">0-50,000</label>
+            <input type="radio" name="income" id="income1" />
+            <label for="income2">50,000+</label><br />
+            <span id="s_income"></span>
+          </div>
+
+          <div>
+            <label>Appointment Date: </label>
+            <!-- To book the appointment Date to visit the Showroom -->
+            <input type="date" name="date" id="date" /><br />
+            <span id="s_date"></span>
+          </div>
+
+          <div>
+            <label>Appointment Time: </label>
+            <!-- To book Appointment Time -->
+            <select name="time_h" id="time_h">
+              <option value="Select">Select</option>
+              <option value="9">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option></select
+            ><br />
+            <span id="s_time_h"></span>
+          </div>
+
+          <div>
+            <!-- To Upload ID Proof -->
+            <label id="id">ID Proof (.jpg or .pdf): </label><br />
+            <input type="file" name="id" id="id" accept=".jpg,.pdf" /><br />
+            <span id="s_id"></span>
+          </div>
+
+          <h3 id="success1"></h3>
+          <!-- Submit button type is not used, validations 'onclick' is used here -->
+          <div>
+            <input
+              type="button"
+              value="Book"
+              id="book"
+              class="book"
+              onclick="validations()"
+            />
+            <button type="reset" class="reset">Clear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Javascript file source -->
+    <!-- <script src="Car_Booking_Appmnt.js"></script> -->
+    <script>
+      var today = new Date().toISOString().split("T")[0]; // To Disable previous dates for future Dates' Booking
+      document.getElementsByName("date")[0].setAttribute("min", today); // Date min attribute is set to Today
+
+      function validations() {
+        // Onclick function named "validations" start here
+        var name1 = document.getElementById("name").value;
+        forName();
+        var mob1 = document.getElementById("mob").value;
+        var email1 = document.getElementById("email").value;
+
+        // Calling them all ensures all validations are checked when 'Book' button is clicked
+        forName();
+        forMob();
+        forEmail();
+        forColor();
+        forIncome();
+        forDate();
+        forTime();
+        forID();
+
+        function forName() {
+          if (name1 == "") {
+            // If name field is empty, below statement will be shown
+            document.getElementById("s_name").innerHTML = "*Name is required";
+            return false;
+          }
+
+          if (name1.length < 3 || name1.length > 20) {
+            // Condition that Name should contain 3-20 characters only
+            document.getElementById("s_name").innerHTML =
+              "*Name should be 3-20 characters long";
+            return false;
+          }
+          return true; // To ensure the code reaches here and the validation is successful
+        }
+
+        function forMob() {
+          if (mob1 == "") {
+            // Mobile number field should not be empty
+            document.getElementById("s_mob").innerHTML =
+              "*Mobile number is required";
+            return false;
+          }
+
+          if (mob1.length != 10) {
+            // Condition to check a 10-digit mobile number
+            document.getElementById("s_mob").innerHTML =
+              "*Mobile number should contain 10 digits";
+            return false;
+          }
+          return true;
+        }
+
+        function forEmail() {
+          // Condition to check if email ID is entered or not
+          if (email1 == "") {
+            document.getElementById("s_email").innerHTML =
+              "Email-ID is required";
+            return false;
+          }
+
+          if (email1.indexOf("@") == 0) {
+            document.getElementById("s_email").innerHTML =
+              "Please enter valid email address";
+          }
+
+          if (
+            email1.charAt(email1.length - 4) != "." &&
+            email1.charAt(email1.length - 3) != "."
+          ) {
+            document.getElementById("s_email").innerHTML =
+              "Please enter valid email address (like .com, .org, etc)";
+          }
+
+          return true;
+        }
+
+        function forColor() {
+          // At least 1 car color preference should be selected
+          var checked1 = document.querySelector('input[name="color"]:checked');
+          if (!checked1) {
+            document.getElementById("s_color").innerHTML =
+              "*Color preference is required";
+            return false;
+          }
+          return true;
+        }
+
+        function forIncome() {
+          // Income should be selected
+          var checked2 = document.querySelector('input[name="income"]:checked');
+          if (!checked2) {
+            document.getElementById("s_income").innerHTML =
+              "*Income is required";
+            return false;
+          }
+          return true;
+        }
+
+        function forDate() {
+          // Date should be selected from the calendar provided
+          var checked3 = document.getElementById("date").value;
+          if (checked3 == "") {
+            document.getElementById("s_date").innerHTML = "*Date is required";
+            return false;
+          }
+          return true;
+        }
+
+        function forTime() {
+          // Time to be selected from the working hours of 9:00 - 16:00
+          var checked4 = document.getElementById("time_h").value;
+          if (checked4 == "Select") {
+            document.getElementById("s_time_h").innerHTML = "*Time is required";
+            return false;
+          }
+          return true;
+        }
+
+        function forID() {
+          // ID Proof should be uploaded. Only JPG and PDF File format is allowed to select
+          var checked5 = document.querySelector("input[name='id']").value;
+          console.log(checked5);
+          if (checked5 == "") {
+            document.getElementById("s_id").innerHTML = "*ID Proof is required";
+            return false;
+          }
+          return true;
+        }
+
+        // To check if all functions are true, then Car Appointment will be booked successfully
+        if (
+          forName() &&
+          forMob() &&
+          forEmail() &&
+          forColor() &&
+          forIncome() &&
+          forDate() &&
+          forTime() &&
+          forID()
+        ) {
+          document.getElementById("success1").innerHTML =
+            "Your Car Appointment has been Booked Successfully.";
+        }
+      }
+    </script>
+  </body>
+</html>
